@@ -1,0 +1,12 @@
+Build docker image in folder with Dockerfile:
+
+sudo docker build -t python:webscrape .
+
+
+Starting container: 
+
+Laptop:
+docker run -d -v c:\Users\Preis\SynologyDrive\DockerStuff\python\:/myStuff --rm python:webscrape 
+
+NAS:
+sudo docker run -d --restart always --name SchnueffelBot -v /volume1/docker/webscraping:/myStuff python:webscrape  
