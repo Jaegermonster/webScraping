@@ -9,14 +9,7 @@ create_new_user:
     - mail
     - buzzwords
     - superbuzzwords=[]
-    - links={'https://www.flugrevue.de/':True,'https://www.aero.de/': True,
-             'https://www.pressebox.de/':True,'https://www.etcusa.com/':False,
-             'https://www.flighttraining-service.de/':False,
-             'https://air-munich.de/':False,
-             'http://www.fliegerverein.eu/':False,
-             'https://www.mfa.aero/de/':False,
-             'https://www.flugausbildung.de/':False,
-             'https://www.eaa.aero/en/':False}
+    - links={'https://www.flugrevue.de/':True,...}
 
 @author: preis
 """
@@ -28,10 +21,22 @@ import pandas as pd
 
 pickleFolder = './' + Config.PICKLE_FOLDER.split('./app/')[1]
 
+
+def read_user_df():  
+    with open(pickleFolder+'UserPickle.pkl', "rb") as f:
+        user_df = pickle.load(f)  # load old user pickle   
+        return user_df
+        
 def write_new_userDf(user_df):
     with open(pickleFolder+'UserPickle.pkl', "wb") as f:  # save to pickle
         pickle.dump(user_df, f, pickle.HIGHEST_PROTOCOL)
-    print('user_df pickled...')    
+    print('user_df pickled...')   
+    
+def delete_user(userID):
+    user_df = read_user_df()    
+    user_df = user_df.drop(userID)
+    write_new_userDf(user_df)
+    print('User #',userID, 'deleted...')
         
 def write_to_excel(user_df):
     try:
@@ -52,20 +57,25 @@ def create_new_user(name, mail, buzzwords, superbuzzwords=[], links={'https://ww
              'http://www.fliegerverein.eu/':False,
              'https://www.mfa.aero/de/':False,
              'https://www.flugausbildung.de/':False,
-             'https://www.eaa.aero/en/':False}):
-    with open(pickleFolder+'UserPickle.pkl', "rb") as f:
-        user_df = pickle.load(f)  # load old user pickle
-        user_df = user_df.append({'name': name, 'email': mail, 'links': links, 'buzzwords': buzzwords, \
+             'https://www.eaa.aero/en/':False,
+             'https://www.reiser-st.com/':False,
+             'https://www.amst.co.at/en/aerospace-medicine/':False,
+             'https://www.amst.co.at/en/civil-aviation/':False}):
+    user_df = read_user_df()
+    # with open(pickleFolder+'UserPickle.pkl', "rb") as f:
+    #     user_df = pickle.load(f)  # load old user pickle
+    user_df = user_df.append({'name': name, 'email': mail, 'links': links, 'buzzwords': buzzwords, \
                             'superbuzzwords': superbuzzwords }, ignore_index=True)
-        write_to_excel(user_df)
+    write_to_excel(user_df)
     print('New user created...')
     # pickle_this('UserPickle.pkl', user_df)  # save to pickle
     write_new_userDf(user_df)
     
 
 def append_to_user(indexValue, buzzwords, superbuzzwords, links):  # Update user
-    with open(pickleFolder+'UserPickle.pkl', "rb") as f:
-        user_df = pickle.load(f)  # load old user pickle   
+    user_df = read_user_df()
+    # with open(pickleFolder+'UserPickle.pkl', "rb") as f:
+    #     user_df = pickle.load(f)  # load old user pickle   
     if buzzwords: 
         user_df['buzzwords'][indexValue].update(buzzwords)    
         print('Append buzzwords')
@@ -78,15 +88,26 @@ def append_to_user(indexValue, buzzwords, superbuzzwords, links):  # Update user
     write_new_userDf(user_df)
     return user_df
         
+
+
+newLinks={'https://www.amst.co.at/en/civil-aviation/':False}
+# user_df = append_to_user(0,[],[],newLinks)
+
+# key_list = list(links.keys())
+# val_list = list(links.values())
+# item_list = list(links.items()) 
+
+links = {'https://www.flugrevue.de/': True,
+ 'https://www.aero.de/': True,
+ 'https://www.pressebox.de/': True,
+ 'https://www.etcusa.com/': False,
+ 'https://www.flighttraining-service.de/': False,
+ 'https://www.reiser-st.com/': False,
+ 'https://www.amst.co.at/en/aerospace-medicine/': False,
+ 'https://www.amst.co.at/en/civil-aviation/': False}
+
 # # example:
 # # create_new_user('KikNA', 'kirsten.preis@flightteam.de', ['Training, Simulator, PPL, UL, Lehrgang, ATPL, CPL'],['Flightteam','reise'])
-# create_new_user('testMe', 'whizzogalaxy@web.de', [],[])
-
-# user_df['links'][2].update({'links':"1000"})    
-newLinks = {'https://air-munich.de/':False,
-             'http://www.fliegerverein.eu/':False,
-             'https://www.mfa.aero/de/':False,
-             'https://www.flugausbildung.de/':False,
-             'https://www.eaa.aero/en/':False}
-# user_df = append_to_user(2,[],[],{'links':"1001"})
-user_df = append_to_user(2,[],[],newLinks)
+create_new_user('PR', 'peter@rothweb.at', ['VR', 'XR','unity', 'varjo', 'simulation', 'simulator'],[],links)
+user_df = read_user_df()
+# delete_user(3)

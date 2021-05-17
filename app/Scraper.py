@@ -2,6 +2,7 @@
 """
 Created on Sat May  1 19:04:15 2021
 2 do:
+    - check amst.at for youtube link (link not working)
 @author: preis
 """
 
@@ -182,11 +183,39 @@ class Scraper:
                         # df = df.append({'head1':'', 'head2': '', 'content':content, 'link': URL, 'when':here_and_now, 'useBuzz':False}, ignore_index=True)
                         valid = {URL:True}
                 self.validity.update(valid)
-        
+            if 'reiser' in URL:  
+                print('Scraping... ', URL)
+                soup = BeautifulSoup(page.content, 'lxml', parse_only = SoupStrainer('div', class_="news")) 
+                for div_tag in soup.find_all("article"):   
+                    head1 = div_tag.a.attrs['title']
+                    content = div_tag.p.get_text()
+                    link = div_tag.a.attrs['href']    
+                    valid = {URL:False}
+                    if head1 is not None: 
+                        df = df.append({'head1':head1, 'head2': content, 'content':'', 'link': link, 'when':here_and_now, 'useBuzz':False}, ignore_index=True)
+                        valid = {URL:True}
+                self.validity.update(valid)
+            if 'amst' in URL:  
+                print('Scraping... ', URL)
+                soup = BeautifulSoup(page.content, 'lxml', parse_only = SoupStrainer('div', class_="news  news-overview ce-bg-2")) 
+                for div_tag in soup.find_all('div', class_="feature_box_text"):
+                    head1 = div_tag.h3.text
+                    content = div_tag.find('div', class_="feature_box_shorttext text_content")
+                    link = div_tag.a 
+                    valid = {URL:False}
+                    if head1 is not None: 
+                        if link:
+                            link = 'https://www.amst.co.at' + link.attrs['href'] 
+                        else:
+                            link = ''
+                        df = df.append({'head1':head1, 'head2': content.text, 'content':'', 'link': link, 'when':here_and_now, 'useBuzz':False}, ignore_index=True)
+                        valid = {URL:True}
+                self.validity.update(valid)
+
         self.df = df.drop_duplicates(['head1', 'head2', 'content'])
         self.df.reset_index(drop=True, inplace=True)
         return self.df, self.validity
-
+    
     
     def snoop_list(self, df, buzzwords):
         import copy

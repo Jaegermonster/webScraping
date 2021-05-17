@@ -4,6 +4,7 @@ Created on Sat May 15 08:31:42 2021
 2do: 
     - Make email time an option setable by user (part of UserObject). 
     - Make links a Variable in Config with all available sites! 
+    - use more read_pickle function...
 @author: preis
 """
 
@@ -76,24 +77,40 @@ def send_an_email(content, receiver, subject):
         smtp.send_message(msg)                
 
 
+def read_user_df():  
+    with open(Config.PICKLE_FOLDER+'UserPickle.pkl', "rb") as f:
+        user_df = pickle.load(f)  # load old user pickle   
+        return user_df
+ 
 
 def check_if_pages_are_still_valid():
     import pandas as pd
-    checkValidWebsites = {}
+    # Get all links from user_df:
+    user_df = read_user_df()  # get users
+    links = user_df['links']  # take all links from all users
+    all_links = pd.DataFrame(columns = ['links'])  # create empty df for links
+    for link in links:
+        if all_links.empty:
+            all_links = all_links.append({'links': link}, ignore_index=True)
+        else:
+            all_links['links'][0].update(link)
+    link_dict = all_links.iloc[0]['links']  # make dictionary from df
+
     # Create test user:    
-    links={'https://www.flugrevue.de/':True,
-        'https://www.aero.de/':True,
-        'https://www.pressebox.de/':True,
-        'https://www.etcusa.com/':False,
-        'https://www.flighttraining-service.de/':False,
-        'https://air-munich.de/':False,
-        'http://www.fliegerverein.eu/':False,
-        'https://www.mfa.aero/de/':False,
-        'https://www.flugausbildung.de/':False,
-        'https://www.eaa.aero/en/':False}
+    # links={'https://www.flugrevue.de/':True,
+    #     'https://www.aero.de/':True,
+    #     'https://www.pressebox.de/':True,
+    #     'https://www.etcusa.com/':False,
+    #     'https://www.flighttraining-service.de/':False,
+    #     'https://air-munich.de/':False,
+    #     'http://www.fliegerverein.eu/':False,
+    #     'https://www.mfa.aero/de/':False,
+    #     'https://www.flugausbildung.de/':False,
+    #     'https://www.eaa.aero/en/':False}
     testAffe_df  = pd.DataFrame(columns = ['name', 'email', 'links', 'buzzwords', 'superbuzzwords'])
-    testAffe_df = testAffe_df.append({'name': 'TestAffe', 'email': 'whizzogalaxy@web.de', 'links': links, 'buzzwords': '', 'superbuzzwords':'' }, ignore_index=True)
+    testAffe_df = testAffe_df.append({'name': 'TestAffe', 'email': 'whizzogalaxy@web.de', 'links': link_dict, 'buzzwords': '', 'superbuzzwords':'' }, ignore_index=True)
     # TestScrape the sites: 
+    checkValidWebsites = {}
     validity = scrape_the_web(testAffe_df,0)  
     checkValidWebsites.update(validity)
     content = []
