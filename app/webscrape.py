@@ -1,14 +1,11 @@
 # -*- coding: utf-8 -*-
 """
 Created on Tue Apr 27 07:37:47 2021
-
 2do: 
     - Make extra user file (in config?). 
     - Add Date and Time to BreakingNews... 
-    - Move to GitHub
     - Add Multithreading with validityReturn
     - Set link:True if user wants this link to scrape
-WindowsTask name: "Scrap the Web"
 @author: preis
 """
 from app.helper_functions import scrape_the_web, check_if_pages_are_still_valid
@@ -30,8 +27,8 @@ def job():
 
 
 schedule.every(12).minutes.do(job)
-# schedule.every(30).seconds.do(check_if_pages_are_still_valid)
-schedule.every().day.at("11:11").do(check_if_pages_are_still_valid)
+# schedule.every(30).seconds.do(job)
+schedule.every().day.at("09:11").do(check_if_pages_are_still_valid)
 # schedule.every().wednesday.at("13:15").do(check_if_pages_are_still_valid)
 # schedule.every().sunday.at("20:17").do(check_if_still_alive)
 

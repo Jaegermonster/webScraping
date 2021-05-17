@@ -30,7 +30,7 @@ class Scraper:
         for i in range(0,len(self.websites)):
             URL = list(self.websites.items())[i][0]
             page = requests.get(URL)
-            if 'aero' in URL: 
+            if 'www.aero.de' in URL: 
                 print('Scraping... ', URL)
                 soup = BeautifulSoup(page.content, 'lxml')
                 valid = {URL:False}
@@ -127,10 +127,66 @@ class Scraper:
                         # print(df)
                         valid = {URL:True}
                 self.validity.update(valid)
+            if 'air-munich' in URL:   
+                print('Scraping... ', URL)
+                soup = BeautifulSoup(page.content, 'lxml', parse_only = SoupStrainer('div', class_="col-md-4"))
+                for div_tag in soup.find_all("div"):
+                    head = div_tag.find("h4")
+                    content = div_tag.find("p")
+                    valid = {URL:False}
+                    if head and content is not None:
+                        df = df.append({'head1':head.get_text(), 'head2': '', 'content':content.get_text(), 'link': URL, 'when':here_and_now, 'useBuzz':False}, ignore_index=True)
+                        valid = {URL:True}
+                self.validity.update(valid)
+            if 'fliegerverein' in URL:  
+                print('Scraping... ', URL)
+                page = requests.get(URL + 'Ausbildung.htm')
+                soup = BeautifulSoup(page.content, 'lxml', parse_only = SoupStrainer('table', id="AutoNumber1"))
+                for div_tag in soup.find_all("a"):
+                    link = URL + div_tag.attrs['href']
+                    valid = {URL:False}
+                    if div_tag is not None:
+                        df = df.append({'head1':div_tag.get_text(), 'head2': '', 'content':'', 'link': link, 'when':here_and_now, 'useBuzz':False}, ignore_index=True)
+                        valid = {URL:True}
+                self.validity.update(valid)
+            if 'mfa.aero' in URL:  
+                print('Scraping... ', URL)
+                soup = BeautifulSoup(page.content, 'lxml', parse_only = SoupStrainer('section', class_="av_textblock_section ")) 
+                for i in range(2,4):
+                    head = soup.find_all('div')[i].text
+                    valid = {URL:False}
+                    if head is not None:
+                        df = df.append({'head1':head, 'head2': '', 'content':'', 'link': URL, 'when':here_and_now, 'useBuzz':False}, ignore_index=True)
+                        valid = {URL:True}
+                self.validity.update(valid)
+            if 'flugausbildung' in URL:  
+                print('Scraping... ', URL)
+                soup = BeautifulSoup(page.content, 'lxml')
+                for div_tag in soup.find_all('div', class_="wrap mcb-wrap one valign-top clearfix"):
+                    content = div_tag.find('p')
+                    valid = {URL:False}
+                    if content is not None: 
+                        df = df.append({'head1':'', 'head2':content.get_text(), 'content':'', 'link': URL, 'when':here_and_now, 'useBuzz':False}, ignore_index=True)
+                        # df = df.append({'head1':'', 'head2': '', 'content':content.get_text(), 'link': URL, 'when':here_and_now, 'useBuzz':False}, ignore_index=True)
+                        valid = {URL:True}
+                self.validity.update(valid)
+            if 'eaa.aero' in URL:  
+                print('Scraping... ', URL)
+                soup = BeautifulSoup(page.content, 'lxml', parse_only = SoupStrainer('div', class_="elm-wrapper elm-text-wrapper")) 
+                for div_tag in soup.find_all("div"):   
+                    valid = {URL:False}
+                    if div_tag is not None: 
+                        content = div_tag.get_text()
+                        content = content.strip('\n')
+                        df = df.append({'head1':'', 'head2':content, 'content':'', 'link': URL, 'when':here_and_now, 'useBuzz':False}, ignore_index=True)
+                        # df = df.append({'head1':'', 'head2': '', 'content':content, 'link': URL, 'when':here_and_now, 'useBuzz':False}, ignore_index=True)
+                        valid = {URL:True}
+                self.validity.update(valid)
+        
         self.df = df.drop_duplicates(['head1', 'head2', 'content'])
         self.df.reset_index(drop=True, inplace=True)
         return self.df, self.validity
-        
+
     
     def snoop_list(self, df, buzzwords):
         import copy
@@ -207,7 +263,7 @@ class Scraper:
                     send_text = ''.join(lines)  # make str from list
                     # if send_text:
                     if subject == 'normal': 
-                        subject = 'News '+ here_and_now
+                        subject = 'News - '+ here_and_now + 'z'
                     send_an_email(send_text, receiver, subject) 
                     print('--> Mail sent...') 
                     os.remove(Config.PICKLE_FOLDER+buzzed_pickle)

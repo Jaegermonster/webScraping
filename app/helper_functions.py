@@ -40,7 +40,7 @@ def scrape_the_web(user_df, i):
     superbuzzedPickleName = user_df['name'][i] + '_superbuzzed.pkl'
     pickle_this(superbuzzedPickleName, superbuzzed_df)  # save to pickle
     
-    time_to_email = MyScrape.time_to_email(9,17)  # When script is called at 09:03 (WindowsTaskScheduler) it will send mail... 
+    time_to_email = MyScrape.time_to_email(7,17)  # When script is called at 09:03 (WindowsTaskScheduler) it will send mail... 
     # time_to_email = MyScrape.time_to_email(10,17)  # When script is called at 09:03 (WindowsTaskScheduler) it will send mail... 
     
     # send mail:
@@ -81,7 +81,16 @@ def check_if_pages_are_still_valid():
     import pandas as pd
     checkValidWebsites = {}
     # Create test user:    
-    links={'https://www.flugrevue.de/':True,'https://www.aero.de/':True,'https://www.pressebox.de/':True,'https://www.etcusa.com/':False,'https://www.flighttraining-service.de/':False}
+    links={'https://www.flugrevue.de/':True,
+        'https://www.aero.de/':True,
+        'https://www.pressebox.de/':True,
+        'https://www.etcusa.com/':False,
+        'https://www.flighttraining-service.de/':False,
+        'https://air-munich.de/':False,
+        'http://www.fliegerverein.eu/':False,
+        'https://www.mfa.aero/de/':False,
+        'https://www.flugausbildung.de/':False,
+        'https://www.eaa.aero/en/':False}
     testAffe_df  = pd.DataFrame(columns = ['name', 'email', 'links', 'buzzwords', 'superbuzzwords'])
     testAffe_df = testAffe_df.append({'name': 'TestAffe', 'email': 'whizzogalaxy@web.de', 'links': links, 'buzzwords': '', 'superbuzzwords':'' }, ignore_index=True)
     # TestScrape the sites: 
@@ -92,4 +101,5 @@ def check_if_pages_are_still_valid():
         content.append(item)
     send_an_email(str(content), 'whizzogalaxy@web.de', 'Checking scrape sites...')
     print('=> Mail sent to TestAffe...')
+    return content
             
