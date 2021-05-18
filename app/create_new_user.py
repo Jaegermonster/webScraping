@@ -88,7 +88,21 @@ def append_to_user(indexValue, buzzwords, superbuzzwords, links):  # Update user
     write_new_userDf(user_df)
     return user_df
         
-
+def update_user(indexValue, buzzwords, superbuzzwords, links):  # Update user
+    user_df = read_user_df()
+    # with open(pickleFolder+'UserPickle.pkl', "rb") as f:
+    #     user_df = pickle.load(f)  # load old user pickle   
+    if buzzwords: 
+        user_df.iloc[indexValue]['buzzwords'] = buzzwords
+        print('Updated buzzwords')
+    if superbuzzwords: 
+        user_df.iloc[indexValue]['superbuzzwords'] = superbuzzwords
+        print('Updated superbuzzwords')  
+    if links: 
+        user_df.iloc[indexValue]['links'] = links
+        print('Updated links')
+    write_new_userDf(user_df)
+    return user_df
 
 newLinks={'https://www.amst.co.at/en/civil-aviation/':False}
 # user_df = append_to_user(0,[],[],newLinks)
@@ -99,15 +113,18 @@ newLinks={'https://www.amst.co.at/en/civil-aviation/':False}
 
 links = {'https://www.flugrevue.de/': True,
  'https://www.aero.de/': True,
- 'https://www.pressebox.de/': True,
+ # 'https://www.pressebox.de/': True,
  'https://www.etcusa.com/': False,
- 'https://www.flighttraining-service.de/': False,
+ # 'https://www.flighttraining-service.de/': False,
  'https://www.reiser-st.com/': False,
  'https://www.amst.co.at/en/aerospace-medicine/': False,
  'https://www.amst.co.at/en/civil-aviation/': False}
 
 # # example:
 # # create_new_user('KikNA', 'kirsten.preis@flightteam.de', ['Training, Simulator, PPL, UL, Lehrgang, ATPL, CPL'],['Flightteam','reise'])
-create_new_user('PR', 'peter@rothweb.at', ['VR', 'XR','unity', 'varjo', 'simulation', 'simulator'],[],links)
+# create_new_user('PR', 'peter@rothweb.at', ['VR', 'XR','unity', 'varjo', 'simulation', 'simulator'],[],links)
 user_df = read_user_df()
 # delete_user(3)
+# update_user(2, [], ['Flightteam'],[])
+# append_to_user(0, [], [], links)
+
