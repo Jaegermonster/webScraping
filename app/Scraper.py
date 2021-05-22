@@ -222,7 +222,7 @@ class Scraper:
                     if head1 is not None and content is not None and link is not None: 
                         head1 = head1.get_text().strip('\n')
                         head1 = head1.strip(' ')
-                        df = df.append({'head1':head1, 'head2': '', 'content':content.text, 'link': link, 'when':here_and_now, 'useBuzz':False}, ignore_index=True)
+                        df = df.append({'head1':head1, 'head2': '', 'content':content.text, 'link': link, 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
                         valid = {URL:True}
                 self.validity.update(valid)
             if 'virtualreality' in URL:  
@@ -241,7 +241,7 @@ class Scraper:
                     valid = {URL:False}
                     if head1 is not None: 
                         head1 = head1.text.strip('\n')
-                        df = df.append({'head1':head1, 'head2': '', 'content':content, 'link': link, 'when':here_and_now, 'useBuzz':False}, ignore_index=True)
+                        df = df.append({'head1':head1, 'head2': '', 'content':content, 'link': link, 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
                         valid = {URL:True}
                 self.validity.update(valid)
                         
