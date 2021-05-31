@@ -68,15 +68,22 @@ class Scraper:
                     head_beta_2 = div_tag.find("span", attrs={"v-A_-headline v-A_-headline--beta"}) 
                     head_gamma_1 = div_tag.find("span", attrs={"v-A_-subline v-A_-subline--gamma"}) 
                     head_gamma_2 = div_tag.find("span", attrs={"v-A_-headline v-A_-headline--delta"}) 
+                    head_gamma = div_tag.find("a", attrs={"v-A_-white__tile__container"}) 
                     if head_alpha_1:
                         valid = {URL:True}
                         df = df.append({'head1': head_alpha_1.get_text(), 'head2': head_alpha_2.get_text(), 'content': content, 'link': a_tag.attrs['href'], 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
                     if head_beta_1:
                         valid = {URL:True}
                         df = df.append({'head1': head_beta_1.get_text(), 'head2': head_beta_2.get_text(), 'content': content, 'link': a_tag.attrs['href'], 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
-                    if head_gamma_1:
-                        valid = {URL:True}
-                        df = df.append({'head1': head_gamma_1.get_text(), 'head2': head_gamma_2.get_text(), 'content': content, 'link': a_tag.attrs['href'], 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
+                    if head_gamma:
+                            head_gamma_1 = div_tag.find("span", attrs={"v-A_-subline v-A_-subline--gamma"}) 
+                            head_gamma_2 = div_tag.find("span", attrs={"v-A_-headline v-A_-headline--delta"}) 
+                            if head_gamma_1:
+                                head_gamma_1 = head_gamma_1.get_text()
+                            if head_gamma_2:
+                                head_gamma_2 = head_gamma_2.get_text()
+                            valid = {URL:True}
+                            df = df.append({'head1': head_gamma_1, 'head2': head_gamma_2, 'content': content, 'link': head_gamma.attrs['href'], 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
                 self.validity.update(valid)
             if 'pressebox' in URL: 
                 print('Scraping... ', URL)
