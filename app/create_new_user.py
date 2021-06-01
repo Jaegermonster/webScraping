@@ -10,7 +10,14 @@ create_new_user:
     - buzzwords
     - superbuzzwords=[]
     - links={'https://www.flugrevue.de/':True,...}
-
+ADD:
+    https://www.aerospacetestinginternational.com/news/simulation-training
+    https://www.aerospacetestinginternational.com/
+    
+Added new: 
+    https://simpleflying.com/category/aviation-news/
+    https://www.ainonline.com/
+    
 @author: preis
 """
 
@@ -62,7 +69,9 @@ def create_new_user(name, mail, buzzwords, superbuzzwords=[], links={'https://ww
              'https://www.amst.co.at/en/aerospace-medicine/':False,
              'https://www.amst.co.at/en/civil-aviation/':False,
              'https://aerobuzz.de/':True,
-             'https://virtualreality-news.net/':True}):
+             'https://virtualreality-news.net/':True,
+             'https://simpleflying.com/category/aviation-news/':True,
+             'https://www.ainonline.com/':True}):
     user_df = read_user_df()
     # with open(pickleFolder+'UserPickle.pkl', "rb") as f:
     #     user_df = pickle.load(f)  # load old user pickle
@@ -113,14 +122,14 @@ newLinks={'https://www.amst.co.at/en/civil-aviation/':False}
 # val_list = list(links.values())
 # item_list = list(links.items()) 
 
-links = {'https://aerobuzz.de/':True,
-             'https://virtualreality-news.net/':True}
+links = {'https://simpleflying.com/category/aviation-news/':True,
+              'https://www.ainonline.com/':True}
 
 # # example:
 # # create_new_user('KikNA', 'kirsten.preis@flightteam.de', ['Training, Simulator, PPL, UL, Lehrgang, ATPL, CPL'],['Flightteam','reise'])
 # create_new_user('PR', 'peter@rothweb.at', ['VR', 'XR','unity', 'varjo', 'simulation', 'simulator'],[],links)
 user_df = read_user_df()
 # delete_user(3)
-# update_user(2, [], ['Flightteam'],[])
+# update_user(0, [], [],links)
 # append_to_user(3, [], [], links)
 
