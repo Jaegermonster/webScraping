@@ -52,39 +52,59 @@ class Scraper:
                         valid = {URL:True}
                         df = df.append({'head1': a_tag.find("h4").get_text(), 'content': article.get_text(), 'link': link, 'when':here_and_now, 'useBuzz':True}, ignore_index=True)           
                 self.validity.update(valid)
-            if 'flugrevue' in URL: 
+            if 'flugrevue' in URL:  # without the 4 alpha headlines 
                 print('Scraping... ', URL)
                 soup = BeautifulSoup(page.content, 'lxml')
                 valid = {URL:False}
-                for div_tag in soup.find_all("div"):
-                    a_tag = div_tag.find('a')
-                    content = div_tag.find('p')
-                    if content is not None:
-                        content = content.text
+                for div_tag in soup.find_all('div'):
+                    div_tag = div_tag.find("a", class_="v-A_-white__tile__container")
+                    if div_tag is not None: 
+                        head_beta_1 = div_tag.find('span', class_="v-A_-subline v-A_-subline--beta")   
+                        head_beta_2 = div_tag.find('span', class_="v-A_-headline v-A_-headline--beta") 
+                        head_gamma_1 = div_tag.find('span', class_="v-A_-subline v-A_-subline--gamma") 
+                        head_gamma_2 = div_tag.find('span', class_="v-A_-headline v-A_-headline--delta")
+                        if head_beta_1 is not None: 
+                            head1 = head_beta_1.text
+                        elif head_gamma_1 is not None: 
+                            head1 = head_gamma_1.text
+                        if head_beta_2 is not None: 
+                            head2 = head_beta_2.text
+                        elif head_gamma_2 is not None: 
+                            head2 = head_gamma_2.text
+                        content = div_tag.p.text
+                        link = div_tag.attrs['href'] 
+                        df = df.append({'head1':head1, 'head2':head2, 'content':content, 'link': link, 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
                         valid = {URL:True}
-                    head_alpha_1 = div_tag.find("span", attrs={"v-A_-subline v-A_-subline--alpha"}) 
-                    head_alpha_2 = div_tag.find("span", attrs={"v-A_-headline v-A_-headline--alpha"}) 
-                    head_beta_1 = div_tag.find("span", attrs={"v-A_-subline v-A_-subline--beta"}) 
-                    head_beta_2 = div_tag.find("span", attrs={"v-A_-headline v-A_-headline--beta"}) 
-                    head_gamma_1 = div_tag.find("span", attrs={"v-A_-subline v-A_-subline--gamma"}) 
-                    head_gamma_2 = div_tag.find("span", attrs={"v-A_-headline v-A_-headline--delta"}) 
-                    head_gamma = div_tag.find("a", attrs={"v-A_-white__tile__container"}) 
-                    if head_alpha_1:
-                        valid = {URL:True}
-                        df = df.append({'head1': head_alpha_1.get_text(), 'head2': head_alpha_2.get_text(), 'content': content, 'link': a_tag.attrs['href'], 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
-                    if head_beta_1:
-                        valid = {URL:True}
-                        df = df.append({'head1': head_beta_1.get_text(), 'head2': head_beta_2.get_text(), 'content': content, 'link': a_tag.attrs['href'], 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
-                    if head_gamma:
-                            head_gamma_1 = div_tag.find("span", attrs={"v-A_-subline v-A_-subline--gamma"}) 
-                            head_gamma_2 = div_tag.find("span", attrs={"v-A_-headline v-A_-headline--delta"}) 
-                            if head_gamma_1:
-                                head_gamma_1 = head_gamma_1.get_text()
-                            if head_gamma_2:
-                                head_gamma_2 = head_gamma_2.get_text()
-                            valid = {URL:True}
-                            df = df.append({'head1': head_gamma_1, 'head2': head_gamma_2, 'content': content, 'link': head_gamma.attrs['href'], 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
                 self.validity.update(valid)
+                # for div_tag in soup.find_all("div"):
+                #     a_tag = div_tag.find('a')
+                #     content = div_tag.find('p')
+                #     if content is not None:
+                #         content = content.text
+                #         valid = {URL:True}
+                #     head_alpha_1 = div_tag.find("span", attrs={"v-A_-subline v-A_-subline--alpha"}) 
+                #     head_alpha_2 = div_tag.find("span", attrs={"v-A_-headline v-A_-headline--alpha"}) 
+                #     head_beta_1 = div_tag.find("span", attrs={"v-A_-subline v-A_-subline--beta"}) 
+                #     head_beta_2 = div_tag.find("span", attrs={"v-A_-headline v-A_-headline--beta"}) 
+                #     head_gamma_1 = div_tag.find("span", attrs={"v-A_-subline v-A_-subline--gamma"}) 
+                #     head_gamma_2 = div_tag.find("span", attrs={"v-A_-headline v-A_-headline--delta"}) 
+                #     head_gamma = div_tag.find("a", attrs={"v-A_-white__tile__container"}) 
+                #     if head_alpha_1:
+                #         valid = {URL:True}
+                #         df = df.append({'head1': head_alpha_1.get_text(), 'head2': head_alpha_2.get_text(), 'content': content, 'link': a_tag.attrs['href'], 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
+                #     if head_beta_1:
+                #         valid = {URL:True}
+                #         df = df.append({'head1': head_beta_1.get_text(), 'head2': head_beta_2.get_text(), 'content': content, 'link': a_tag.attrs['href'], 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
+                #     if head_gamma:
+                #             head_gamma_1 = div_tag.find("span", attrs={"v-A_-subline v-A_-subline--gamma"}) 
+                #             head_gamma_2 = div_tag.find("span", attrs={"v-A_-headline v-A_-headline--delta"}) 
+                #             if head_gamma_1:
+                #                 head_gamma_1 = head_gamma_1.get_text()
+                #             if head_gamma_2:
+                #                 head_gamma_2 = head_gamma_2.get_text()
+                #             valid = {URL:True}
+                #             df = df.append({'head1': head_gamma_1, 'head2': head_gamma_2, 'content': content, 'link': head_gamma.attrs['href'], 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
+                # self.validity.update(valid)
             if 'pressebox' in URL: 
                 print('Scraping... ', URL)
                 soup = BeautifulSoup(page.content, 'lxml')
@@ -138,10 +158,10 @@ class Scraper:
             if 'air-munich' in URL:   
                 print('Scraping... ', URL)
                 soup = BeautifulSoup(page.content, 'lxml', parse_only = SoupStrainer('div', class_="col-md-4"))
+                valid = {URL:False}
                 for div_tag in soup.find_all("div"):
                     head = div_tag.find("h4")
                     content = div_tag.find("p")
-                    valid = {URL:False}
                     if head and content is not None:
                         df = df.append({'head1':head.get_text(), 'head2': '', 'content':content.get_text(), 'link': URL, 'when':here_and_now, 'useBuzz':False}, ignore_index=True)
                         valid = {URL:True}
@@ -150,9 +170,9 @@ class Scraper:
                 print('Scraping... ', URL)
                 page = requests.get(URL + 'Ausbildung.htm')
                 soup = BeautifulSoup(page.content, 'lxml', parse_only = SoupStrainer('table', id="AutoNumber1"))
+                valid = {URL:False}
                 for div_tag in soup.find_all("a"):
                     link = URL + div_tag.attrs['href']
-                    valid = {URL:False}
                     if div_tag is not None:
                         df = df.append({'head1':div_tag.get_text(), 'head2': '', 'content':'', 'link': link, 'when':here_and_now, 'useBuzz':False}, ignore_index=True)
                         valid = {URL:True}
@@ -160,9 +180,9 @@ class Scraper:
             if 'mfa.aero' in URL:  
                 print('Scraping... ', URL)
                 soup = BeautifulSoup(page.content, 'lxml', parse_only = SoupStrainer('section', class_="av_textblock_section ")) 
+                valid = {URL:False}
                 for i in range(2,4):
                     head = soup.find_all('div')[i].text
-                    valid = {URL:False}
                     if head is not None:
                         df = df.append({'head1':head, 'head2': '', 'content':'', 'link': URL, 'when':here_and_now, 'useBuzz':False}, ignore_index=True)
                         valid = {URL:True}
@@ -170,9 +190,9 @@ class Scraper:
             if 'flugausbildung' in URL:  
                 print('Scraping... ', URL)
                 soup = BeautifulSoup(page.content, 'lxml')
+                valid = {URL:False}
                 for div_tag in soup.find_all('div', class_="wrap mcb-wrap one valign-top clearfix"):
                     content = div_tag.find('p')
-                    valid = {URL:False}
                     if content is not None: 
                         df = df.append({'head1':'', 'head2':content.get_text(), 'content':'', 'link': URL, 'when':here_and_now, 'useBuzz':False}, ignore_index=True)
                         # df = df.append({'head1':'', 'head2': '', 'content':content.get_text(), 'link': URL, 'when':here_and_now, 'useBuzz':False}, ignore_index=True)
@@ -181,8 +201,8 @@ class Scraper:
             if 'eaa.aero' in URL:  
                 print('Scraping... ', URL)
                 soup = BeautifulSoup(page.content, 'lxml', parse_only = SoupStrainer('div', class_="elm-wrapper elm-text-wrapper")) 
-                for div_tag in soup.find_all("div"):   
-                    valid = {URL:False}
+                valid = {URL:False}
+                for div_tag in soup.find_all("div"): 
                     if div_tag is not None: 
                         content = div_tag.get_text()
                         content = content.strip('\n')
@@ -193,11 +213,11 @@ class Scraper:
             if 'reiser' in URL:  
                 print('Scraping... ', URL)
                 soup = BeautifulSoup(page.content, 'lxml', parse_only = SoupStrainer('div', class_="news")) 
+                valid = {URL:False}
                 for div_tag in soup.find_all("article"):   
                     head1 = div_tag.a.attrs['title']
                     content = div_tag.p.get_text()
                     link = div_tag.a.attrs['href']    
-                    valid = {URL:False}
                     if head1 is not None: 
                         df = df.append({'head1':head1, 'head2': content, 'content':'', 'link': link, 'when':here_and_now, 'useBuzz':False}, ignore_index=True)
                         valid = {URL:True}
@@ -205,11 +225,11 @@ class Scraper:
             if 'amst' in URL:  
                 print('Scraping... ', URL)
                 soup = BeautifulSoup(page.content, 'lxml', parse_only = SoupStrainer('div', class_="news  news-overview ce-bg-2")) 
+                valid = {URL:False}
                 for div_tag in soup.find_all('div', class_="feature_box_text"):
                     head1 = div_tag.h3.text
                     content = div_tag.find('div', class_="feature_box_shorttext text_content")
                     link = div_tag.a 
-                    valid = {URL:False}
                     if head1 is not None: 
                         if link:
                             link = 'https://www.amst.co.at' + link.attrs['href'] 
@@ -221,11 +241,11 @@ class Scraper:
             if 'aerobuzz' in URL:  
                 print('Scraping... ', URL)
                 soup = BeautifulSoup(page.content, 'lxml', parse_only = SoupStrainer('div', class_="articles_recents")) 
+                valid = {URL:False}
                 for div_tag in soup.find_all('li'):
                     head1 = div_tag.h3
                     content = div_tag.p
                     link = div_tag.find_all('a')[2].attrs['href']
-                    valid = {URL:False}
                     if head1 is not None and content is not None and link is not None: 
                         head1 = head1.get_text().strip('\n')
                         head1 = head1.strip(' ')
@@ -235,6 +255,7 @@ class Scraper:
             if 'virtualreality' in URL:  
                 print('Scraping... ', URL)
                 soup = BeautifulSoup(page.content, 'lxml', parse_only = SoupStrainer('main', id="main"))
+                valid = {URL:False}
                 for div_tag in soup.find_all('article'):
                     link = div_tag.h3.find('a').attrs['href']
                     head1 = div_tag.h3
@@ -245,7 +266,6 @@ class Scraper:
                     if len(contents) < 3:
                         content2 = ''
                     content = content1.text + content2
-                    valid = {URL:False}
                     if head1 is not None: 
                         head1 = head1.text.strip('\n')
                         df = df.append({'head1':head1, 'head2': '', 'content':content, 'link': link, 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
@@ -254,11 +274,11 @@ class Scraper:
             if 'simpleflying' in URL:  
                 print('Scraping... ', URL)
                 soup = BeautifulSoup(page.content, 'lxml', parse_only = SoupStrainer('div', class_="archive-main archive-grid  archive-heading-small archive-borders-disabled archive-shadow-enabled archive-scale-disabled")) 
+                valid = {URL:False}
                 for div_tag in soup.find_all('div', class_="post-inner"):
                     link = div_tag.a.attrs['href']
                     head1 = div_tag.h2
                     content = div_tag.find('div', class_="entry-excerpt")
-                    valid = {URL:False}
                     if head1 is not None: 
                         content = content.text.strip('\n')
                         content = content.strip('\t')
@@ -268,9 +288,9 @@ class Scraper:
             if 'ainonline' in URL:  
                 print('Scraping... ', URL)
                 soup = BeautifulSoup(page.content, 'lxml', parse_only = SoupStrainer('div', class_="small-12 medium-7 large-8 columns main-content first")) 
+                valid = {URL:False}
                 for div_tag in soup.find_all('div'):
                     head1 = div_tag.find('div', class_="views-field views-field-title")
-                    valid = {URL:False}
                     if head1 is not None: 
                         head1 = div_tag.find('span', class_="field-content title")
                         head2 = div_tag.find('div', class_="field-content teaser")

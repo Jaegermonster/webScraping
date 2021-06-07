@@ -57,8 +57,11 @@ def write_to_excel(user_df):
         print('IOError... :( ')
 
 
-def create_new_user(name, mail, buzzwords, superbuzzwords=[], links={'https://www.flugrevue.de/':True,'https://www.aero.de/':True,
-             'https://www.pressebox.de/':True,'https://www.etcusa.com/':False,
+def create_new_user(name, mail, buzzwords, superbuzzwords=[], 
+                    links={'https://www.flugrevue.de/':True,
+                           'https://www.aero.de/':True,
+             'https://www.pressebox.de/':True,
+             'https://www.etcusa.com/':False,
              'https://www.flighttraining-service.de/':False,
              'https://air-munich.de/':False,
              'http://www.fliegerverein.eu/':False,
@@ -122,9 +125,19 @@ newLinks={'https://www.amst.co.at/en/civil-aviation/':False}
 # val_list = list(links.values())
 # item_list = list(links.items()) 
 
-links = {'https://simpleflying.com/category/aviation-news/':True,
-              'https://www.ainonline.com/':True}
-
+# links = {'https://simpleflying.com/category/aviation-news/':True,
+#               'https://www.ainonline.com/':True}
+links={'https://www.flugrevue.de/':True,
+                           'https://www.aero.de/':True,
+             'https://www.pressebox.de/':True,
+             'https://www.etcusa.com/':False,
+             'https://www.reiser-st.com/':False,
+             'https://www.amst.co.at/en/aerospace-medicine/':False,
+             'https://www.amst.co.at/en/civil-aviation/':False,
+             'https://aerobuzz.de/':True,
+             'https://virtualreality-news.net/':True,
+             'https://simpleflying.com/category/aviation-news/':True,
+             'https://www.ainonline.com/':True}
 # # example:
 # # create_new_user('KikNA', 'kirsten.preis@flightteam.de', ['Training, Simulator, PPL, UL, Lehrgang, ATPL, CPL'],['Flightteam','reise'])
 # create_new_user('PR', 'peter@rothweb.at', ['VR', 'XR','unity', 'varjo', 'simulation', 'simulator'],[],links)
