@@ -74,7 +74,8 @@ def create_new_user(name, mail, buzzwords, superbuzzwords=[],
              'https://aerobuzz.de/':True,
              'https://virtualreality-news.net/':True,
              'https://simpleflying.com/category/aviation-news/':True,
-             'https://www.ainonline.com/':True}):
+             'https://www.ainonline.com/':True,
+             'https://www.heise.de/':True}):
     user_df = read_user_df()
     # with open(pickleFolder+'UserPickle.pkl', "rb") as f:
     #     user_df = pickle.load(f)  # load old user pickle
@@ -118,7 +119,7 @@ def update_user(indexValue, buzzwords, superbuzzwords, links):  # Update user
     write_new_userDf(user_df)
     return user_df
 
-newLinks={'https://www.amst.co.at/en/civil-aviation/':False}
+newLinks={'https://www.heise.de/':True}
 # user_df = append_to_user(0,[],[],newLinks)
 
 # key_list = list(links.keys())
@@ -144,5 +145,5 @@ links={'https://www.flugrevue.de/':True,
 user_df = read_user_df()
 # delete_user(3)
 # update_user(0, [], [],links)
-# append_to_user(3, [], [], links)
+# append_to_user(3, [], [], newLinks)
 

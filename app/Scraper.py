@@ -298,6 +298,25 @@ class Scraper:
                         df = df.append({'head1':head1.text, 'head2':head2.text, 'content':'', 'link': link, 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
                         valid = {URL:True}
                 self.validity.update(valid)
+            if 'heise.de' in URL:  
+                print('Scraping... ', URL)
+                soup = BeautifulSoup(page.content, 'lxml')
+                valid = {URL:False}
+                for div_tag in soup.find_all('div', class_="a-layout__main"):
+                    for div_tag in div_tag.find_all("article"):
+                        valid = {URL:False}
+                        if div_tag is not None: 
+                            # print(head1.get_text())
+                            head1 = div_tag.h1
+                            head1 = head1.get_text().strip('\n')
+                            link = div_tag.find('a').attrs['href']
+                            if link:
+                                link = 'https://www.heise.de' + link
+                            df = df.append({'head1':head1, 'head2':'', 'content':content, 'link': link, 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
+                            valid = {URL:True}
+                self.validity.update(valid)
+                
+                
 
         self.df = df.drop_duplicates(['head1', 'head2', 'content'])
         self.df.reset_index(drop=True, inplace=True)
