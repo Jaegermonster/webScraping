@@ -315,7 +315,19 @@ class Scraper:
                             df = df.append({'head1':head1, 'head2':'', 'content':content, 'link': link, 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
                             valid = {URL:True}
                 self.validity.update(valid)
-                
+            if 'artificialintelligence' in URL:  
+                print('Scraping... ', URL)
+                soup = BeautifulSoup(page.content, 'lxml', parse_only = SoupStrainer('main', id="main"))
+                valid = {URL:False}
+                for article_tag in soup.find_all("article"):
+                    head1 = article_tag.header
+                    if head1 is not None: 
+                        head1 = head1.get_text().strip('\n')
+                        content = article_tag.find('div', class_="cell small-12 medium-8 large-6")
+                        link = article_tag.a.attrs['href']
+                        df = df.append({'head1':head1, 'head2':'', 'content':content.text, 'link': link, 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
+                        valid = {URL:True}
+                self.validity.update(valid)                
                 
 
         self.df = df.drop_duplicates(['head1', 'head2', 'content'])
