@@ -327,9 +327,35 @@ class Scraper:
                         link = article_tag.a.attrs['href']
                         df = df.append({'head1':head1, 'head2':'', 'content':content.text, 'link': link, 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
                         valid = {URL:True}
-                self.validity.update(valid)                
-                
+                self.validity.update(valid))
+            if 'aerospacetestinginternational' in URL:  
+                print('Scraping... ', URL)                
+                soup = BeautifulSoup(page.content, 'lxml', parse_only = SoupStrainer('div', class_="row b-row listing meta-below grid-2")) 
+                valid = {URL:False}
+                for div_tag in soup.find_all('div', class_="column half b-col"):
+                    head1 = div_tag.h2
+                    if head1 is not None: 
+                        head1 = head1.text
+                        content = div_tag.p.text
+                        link = div_tag.find('a').attrs['href']
+                        df = df.append({'head1':head1, 'head2':'', 'content':content, 'link': link, 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
+                        valid = {URL:True}
+                self.validity.update(valid))
+            if 'generalaviationnews' in URL:  
+                print('Scraping... ', URL)                
+                soup = BeautifulSoup(page.content, 'lxml', parse_only = SoupStrainer('main', class_="content"))
+                valid = {URL:False}
+                for article_tag in soup.find_all('article'):
+                    head1 = article_tag.h2
+                    if head1 is not None: 
+                        head1 = head1.text
+                        content = article_tag.div.p.text
+                        link = article_tag.find('a').attrs['href']
+                        df = df.append({'head1':head1, 'head2':'', 'content':content, 'link': link, 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
+                        valid = {URL:True}
+                self.validity.update(valid))
 
+    
         self.df = df.drop_duplicates(['head1', 'head2', 'content'])
         self.df.reset_index(drop=True, inplace=True)
         return self.df, self.validity

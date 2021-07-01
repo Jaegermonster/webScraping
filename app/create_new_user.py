@@ -75,7 +75,14 @@ def create_new_user(name, mail, buzzwords, superbuzzwords=[],
              'https://virtualreality-news.net/':True,
              'https://simpleflying.com/category/aviation-news/':True,
              'https://www.ainonline.com/':True,
-             'https://www.heise.de/':True}):
+             'https://www.heise.de/':True,
+             'https://artificialintelligence-news.com/': True,
+             'https://www.aerospacetestinginternational.com/news/':True,
+            'https://www.aerospacetestinginternational.com/news/software/':True,
+            'https://www.aerospacetestinginternational.com/news/industry-news/':True,
+            'https://www.aerospacetestinginternational.com/news/simulation-training/':True,
+            'https://www.aerospacetestinginternational.com/news/defense/':True,
+            'https://generalaviationnews.com/':True}):
     user_df = read_user_df()
     # with open(pickleFolder+'UserPickle.pkl', "rb") as f:
     #     user_df = pickle.load(f)  # load old user pickle
@@ -126,7 +133,12 @@ newLinks={'https://www.heise.de/':True}
 # val_list = list(links.values())
 # item_list = list(links.items()) 
 
-links = {'https://artificialintelligence-news.com/':True}
+links = {'https://www.aerospacetestinginternational.com/news/':True,
+        'https://www.aerospacetestinginternational.com/news/software/':True,
+        'https://www.aerospacetestinginternational.com/news/industry-news/':True,
+        'https://www.aerospacetestinginternational.com/news/simulation-training/':True,
+        'https://www.aerospacetestinginternational.com/news/defense/':True,
+        'https://generalaviationnews.com/':True}
 # links={'https://www.flugrevue.de/':True,
 #                            'https://www.aero.de/':True,
 #              'https://www.pressebox.de/':True,
@@ -144,5 +156,5 @@ links = {'https://artificialintelligence-news.com/':True}
 user_df = read_user_df()
 # delete_user(3)
 # update_user(0, [], [],links)
-# append_to_user(3, [], [], links)
+# append_to_user(0, [], [], links)
 
