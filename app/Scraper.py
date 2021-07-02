@@ -304,16 +304,16 @@ class Scraper:
                 valid = {URL:False}
                 for div_tag in soup.find_all('div', class_="a-layout__main"):
                     for div_tag in div_tag.find_all("article"):
-                        valid = {URL:False}
                         if div_tag is not None: 
-                            # print(head1.get_text())
                             head1 = div_tag.h1
-                            head1 = head1.get_text().strip('\n')
-                            link = div_tag.find('a').attrs['href']
-                            if link:
-                                link = 'https://www.heise.de' + link
-                            df = df.append({'head1':head1, 'head2':'', 'content':content, 'link': link, 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
-                            valid = {URL:True}
+                            if head1 is not None: 
+                                head1 = head1.get_text().strip('\n')
+                                content = div_tag.p.text
+                                link = div_tag.find('a').attrs['href']
+                                if link:
+                                    link = 'https://www.heise.de' + link
+                                df = df.append({'head1':head1, 'head2':'', 'content':content, 'link': link, 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
+                                valid = {URL:True}                            
                 self.validity.update(valid)
             if 'artificialintelligence' in URL:  
                 print('Scraping... ', URL)
@@ -327,7 +327,7 @@ class Scraper:
                         link = article_tag.a.attrs['href']
                         df = df.append({'head1':head1, 'head2':'', 'content':content.text, 'link': link, 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
                         valid = {URL:True}
-                self.validity.update(valid))
+                self.validity.update(valid)
             if 'aerospacetestinginternational' in URL:  
                 print('Scraping... ', URL)                
                 soup = BeautifulSoup(page.content, 'lxml', parse_only = SoupStrainer('div', class_="row b-row listing meta-below grid-2")) 
@@ -340,7 +340,7 @@ class Scraper:
                         link = div_tag.find('a').attrs['href']
                         df = df.append({'head1':head1, 'head2':'', 'content':content, 'link': link, 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
                         valid = {URL:True}
-                self.validity.update(valid))
+                self.validity.update(valid)
             if 'generalaviationnews' in URL:  
                 print('Scraping... ', URL)                
                 soup = BeautifulSoup(page.content, 'lxml', parse_only = SoupStrainer('main', class_="content"))
@@ -353,7 +353,7 @@ class Scraper:
                         link = article_tag.find('a').attrs['href']
                         df = df.append({'head1':head1, 'head2':'', 'content':content, 'link': link, 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
                         valid = {URL:True}
-                self.validity.update(valid))
+                self.validity.update(valid)
 
     
         self.df = df.drop_duplicates(['head1', 'head2', 'content'])
