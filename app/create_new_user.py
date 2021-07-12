@@ -110,7 +110,7 @@ def append_to_user(indexValue, buzzwords, superbuzzwords, links):  # Update user
     write_new_userDf(user_df)
     return user_df
         
-def update_user(indexValue, buzzwords, superbuzzwords, links):  # Update user
+def update_user(indexValue, buzzwords, superbuzzwords, links, email):  # Update user
     user_df = read_user_df()
     # with open(pickleFolder+'UserPickle.pkl', "rb") as f:
     #     user_df = pickle.load(f)  # load old user pickle   
@@ -123,6 +123,9 @@ def update_user(indexValue, buzzwords, superbuzzwords, links):  # Update user
     if links: 
         user_df.iloc[indexValue]['links'] = links
         print('Updated links')
+    if email: 
+        user_df.iloc[indexValue]['email'] = email
+        print('Updated email')
     write_new_userDf(user_df)
     return user_df
 
@@ -156,5 +159,6 @@ links = {'https://www.aerospacetestinginternational.com/news/':True,
 user_df = read_user_df()
 # delete_user(3)
 # update_user(0, [], [],links)
+# update_user(3, [], [],[], 'peter.roth@amst.at')
 # append_to_user(0, [], [], links)
 
