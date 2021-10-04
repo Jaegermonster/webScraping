@@ -157,7 +157,7 @@ class Scraper:
                 self.validity.update(valid)
             if 'air-munich' in URL:   
                 print('Scraping... ', URL)
-                soup = BeautifulSoup(page.content, 'lxml', parse_only = SoupStrainer('div', class_="col-md-4"))
+                soup = BeautifulSoup(page.content, 'lxml', parse_only = SoupStrainer('div', class_="col-md-6"))
                 valid = {URL:False}
                 for div_tag in soup.find_all("div"):
                     head = div_tag.find("h4")
