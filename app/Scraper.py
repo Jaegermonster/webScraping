@@ -157,7 +157,7 @@ class Scraper:
                 self.validity.update(valid)
             if 'air-munich' in URL:   
                 print('Scraping... ', URL)
-                soup = BeautifulSoup(page.content, 'lxml', parse_only = SoupStrainer('div', class_="col-md-4"))
+                soup = BeautifulSoup(page.content, 'lxml', parse_only = SoupStrainer('div', class_="col-md-6"))
                 valid = {URL:False}
                 for div_tag in soup.find_all("div"):
                     head = div_tag.find("h4")
@@ -222,20 +222,17 @@ class Scraper:
                         df = df.append({'head1':head1, 'head2': content, 'content':'', 'link': link, 'when':here_and_now, 'useBuzz':False}, ignore_index=True)
                         valid = {URL:True}
                 self.validity.update(valid)
-            if 'amst' in URL:  
+            if 'amst' in URL: 
                 print('Scraping... ', URL)
-                soup = BeautifulSoup(page.content, 'lxml', parse_only = SoupStrainer('div', class_="news  news-overview ce-bg-2")) 
+                soup = BeautifulSoup(page.content, 'lxml', parse_only = SoupStrainer('div', class_="pp-posts pp-posts-skin-creative pp-elementor-grid pp-posts-grid")) 
                 valid = {URL:False}
-                for div_tag in soup.find_all('div', class_="feature_box_text"):
-                    head1 = div_tag.h3.text
-                    content = div_tag.find('div', class_="feature_box_shorttext text_content")
-                    link = div_tag.a 
+                for div_tag in soup.find_all('div', class_="pp-post-content"):
+                    head1 = div_tag.h2.text
+                    head2 = div_tag.find('span', class_="pp-post-date").text
+                    link = div_tag.find('span', class_="pp-post-date").find('a').attrs['href']
+                    content = div_tag.find('div', class_="pp-post-excerpt")
                     if head1 is not None: 
-                        if link:
-                            link = 'https://www.amst.co.at' + link.attrs['href'] 
-                        else:
-                            link = ''
-                        df = df.append({'head1':head1, 'head2': content.text, 'content':'', 'link': link, 'when':here_and_now, 'useBuzz':False}, ignore_index=True)
+                        df = df.append({'head1':head1, 'head2':head2, 'content':content.text, 'link':link, 'when':here_and_now, 'useBuzz':False}, ignore_index=True)
                         valid = {URL:True}
                 self.validity.update(valid)
             if 'aerobuzz' in URL:  

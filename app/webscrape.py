@@ -26,7 +26,7 @@ def job():
 
 
 
-schedule.every(20).minutes.do(job)
+schedule.every(69).minutes.do(job)
 # schedule.every(30).seconds.do(job)
 schedule.every().day.at("09:11").do(check_if_pages_are_still_valid)
 # schedule.every().wednesday.at("13:15").do(check_if_pages_are_still_valid)
