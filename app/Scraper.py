@@ -76,35 +76,6 @@ class Scraper:
                         df = df.append({'head1':head1, 'head2':head2, 'content':content, 'link': link, 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
                         valid = {URL:True}
                 self.validity.update(valid)
-                # for div_tag in soup.find_all("div"):
-                #     a_tag = div_tag.find('a')
-                #     content = div_tag.find('p')
-                #     if content is not None:
-                #         content = content.text
-                #         valid = {URL:True}
-                #     head_alpha_1 = div_tag.find("span", attrs={"v-A_-subline v-A_-subline--alpha"}) 
-                #     head_alpha_2 = div_tag.find("span", attrs={"v-A_-headline v-A_-headline--alpha"}) 
-                #     head_beta_1 = div_tag.find("span", attrs={"v-A_-subline v-A_-subline--beta"}) 
-                #     head_beta_2 = div_tag.find("span", attrs={"v-A_-headline v-A_-headline--beta"}) 
-                #     head_gamma_1 = div_tag.find("span", attrs={"v-A_-subline v-A_-subline--gamma"}) 
-                #     head_gamma_2 = div_tag.find("span", attrs={"v-A_-headline v-A_-headline--delta"}) 
-                #     head_gamma = div_tag.find("a", attrs={"v-A_-white__tile__container"}) 
-                #     if head_alpha_1:
-                #         valid = {URL:True}
-                #         df = df.append({'head1': head_alpha_1.get_text(), 'head2': head_alpha_2.get_text(), 'content': content, 'link': a_tag.attrs['href'], 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
-                #     if head_beta_1:
-                #         valid = {URL:True}
-                #         df = df.append({'head1': head_beta_1.get_text(), 'head2': head_beta_2.get_text(), 'content': content, 'link': a_tag.attrs['href'], 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
-                #     if head_gamma:
-                #             head_gamma_1 = div_tag.find("span", attrs={"v-A_-subline v-A_-subline--gamma"}) 
-                #             head_gamma_2 = div_tag.find("span", attrs={"v-A_-headline v-A_-headline--delta"}) 
-                #             if head_gamma_1:
-                #                 head_gamma_1 = head_gamma_1.get_text()
-                #             if head_gamma_2:
-                #                 head_gamma_2 = head_gamma_2.get_text()
-                #             valid = {URL:True}
-                #             df = df.append({'head1': head_gamma_1, 'head2': head_gamma_2, 'content': content, 'link': head_gamma.attrs['href'], 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
-                # self.validity.update(valid)
             if 'pressebox' in URL: 
                 print('Scraping... ', URL)
                 soup = BeautifulSoup(page.content, 'lxml')
@@ -212,14 +183,13 @@ class Scraper:
                 self.validity.update(valid)
             if 'reiser' in URL:  
                 print('Scraping... ', URL)
-                soup = BeautifulSoup(page.content, 'lxml', parse_only = SoupStrainer('div', class_="news")) 
+                soup = BeautifulSoup(page.content, 'lxml', parse_only = SoupStrainer('div', class_="et_pb_row et_pb_row_4")) 
                 valid = {URL:False}
-                for div_tag in soup.find_all("article"):   
-                    head1 = div_tag.a.attrs['title']
-                    content = div_tag.p.get_text()
-                    link = div_tag.a.attrs['href']    
-                    if head1 is not None: 
-                        df = df.append({'head1':head1, 'head2': content, 'content':'', 'link': link, 'when':here_and_now, 'useBuzz':False}, ignore_index=True)
+                for div_tag in soup.find_all("div"):   
+                    head1 = div_tag.find('h2', class_="et_pb_slide_title")
+                    content = div_tag.find('div', class_='et_pb_slide_content')
+                    if head1 is not None:
+                        df = df.append({'head1':head1.text, 'head2':'', 'content':content.text, 'link':head1.a.attrs['href'], 'when':here_and_now, 'useBuzz':False}, ignore_index=True)
                         valid = {URL:True}
                 self.validity.update(valid)
             if 'amst' in URL: 

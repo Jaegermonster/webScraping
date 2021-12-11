@@ -29,8 +29,8 @@ from app.helper_functions import check_if_pages_are_still_valid
 
 # def job():
 #     for i in range(0,user_df.shape[0]): 
-#         scrape_the_web(user_df, i)  # w/o multithreding
-#         # threading.Thread(target = scrape_the_web, args=(user_df,i)).start()  # w/ multithreding
+#         scrape_the_web(user_df, i)  # w/o multithreading
+#         # threading.Thread(target = scrape_the_web, args=(user_df,i)).start()  # w/ multithreading
 
 # job()
 
@@ -44,5 +44,5 @@ from app.helper_functions import check_if_pages_are_still_valid
 #     schedule.run_pending()
 #     time.sleep(1)
 
-content = check_if_pages_are_still_valid()
+content, testAffe_df = check_if_pages_are_still_valid()
 print(content)

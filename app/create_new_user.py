@@ -9,7 +9,8 @@ create_new_user:
     - mail
     - buzzwords
     - superbuzzwords=[]
-    - links={'https://www.flugrevue.de/':True,...}
+    - links={'https://www.flugrevue.de/':True,...} 
+    # link: True = buzzwords are used, False = every new article will be buzzed
 ADD:
     https://www.aerospacetestinginternational.com/news/simulation-training
     https://www.aerospacetestinginternational.com/
@@ -153,6 +154,27 @@ links = {'https://www.aerospacetestinginternational.com/news/':True,
 #              'https://virtualreality-news.net/':True,
 #              'https://simpleflying.com/category/aviation-news/':True,
 #              'https://www.ainonline.com/':True}
+
+{'https://www.flugrevue.de/': True,
+ 'https://www.aero.de/': True,
+ 'https://www.pressebox.de/': True,
+ 'https://www.etcusa.com/': False,
+ 'https://www.reiser-st.com/': False,
+ 'https://www.amst.co.at/en/aerospace-medicine/': False,
+ 'https://www.amst.co.at/en/civil-aviation/': False,
+ 'https://aerobuzz.de/': True,
+ 'https://virtualreality-news.net/': True,
+ 'https://simpleflying.com/category/aviation-news/': True,
+ 'https://www.ainonline.com/': True,
+ 'https://www.heise.de/': True,
+ 'https://artificialintelligence-news.com/': True,
+ 'https://www.aerospacetestinginternational.com/news/': True,
+ 'https://www.aerospacetestinginternational.com/news/software/': True,
+ 'https://www.aerospacetestinginternational.com/news/industry-news/': True,
+ 'https://www.aerospacetestinginternational.com/news/simulation-training/': True,
+ 'https://www.aerospacetestinginternational.com/news/defense/': True,
+ 'https://generalaviationnews.com/': True}
+
 # # example:
 # # create_new_user('KikNA', 'kirsten.preis@flightteam.de', ['Training, Simulator, PPL, UL, Lehrgang, ATPL, CPL'],['Flightteam','reise'])
 # create_new_user('PR', 'peter@rothweb.at', ['VR', 'XR','unity', 'varjo', 'simulation', 'simulator'],[],links)

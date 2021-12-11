@@ -32,7 +32,7 @@ def scrape_the_web(user_df, i):
     MyScrape = Scraper(user_df['name'][i], user_df['email'][i], user_df['buzzwords'][i], user_df['superbuzzwords'][i], user_df['links'][i])  # Create objects
     
     df, validity = MyScrape.scrape_site()  # scrape websites for all headlines
-    
+    print(df)
     buzzed_df, buzzedStuff = MyScrape.snoop_list(df, user_df['buzzwords'][i])  # get only buzzed headlines
     buzzedPickleName = user_df['name'][i] + '_buzzed.pkl'
     pickle_this(buzzedPickleName, buzzed_df)  # save to pickle
@@ -96,6 +96,9 @@ def check_if_pages_are_still_valid():
             all_links['links'][0].update(link)
     link_dict = all_links.iloc[0]['links']  # make dictionary from df
 
+    link_dict={'https://www.aerospacetestinginternational.com/news/software/':True}
+
+
     # Create test user:    
     # links={'https://www.flugrevue.de/':True,
     #     'https://www.aero.de/':True,
@@ -107,8 +110,10 @@ def check_if_pages_are_still_valid():
     #     'https://www.mfa.aero/de/':False,
     #     'https://www.flugausbildung.de/':False,
     #     'https://www.eaa.aero/en/':False}
-    testAffe_df  = pd.DataFrame(columns = ['name', 'email', 'links', 'buzzwords', 'superbuzzwords'])
-    testAffe_df = testAffe_df.append({'name': 'TestAffe', 'email': 'whizzogalaxy@web.de', 'links': link_dict, 'buzzwords': '', 'superbuzzwords':'' }, ignore_index=True)
+    testAffe_df = pd.DataFrame(columns = ['name', 'email', 'links', 'buzzwords', 'superbuzzwords'])
+    # testAffe_df = testAffe_df.append({'name': 'TestAffe', 'email': 'whizzogalaxy@web.de', 'links': link_dict, 'buzzwords': '', 'superbuzzwords':'' }, ignore_index=True)
+    testAffe_df = testAffe_df.append({'name': 'TestAffe', 'email': '', 'links': link_dict, 'buzzwords': ['AI '], 'superbuzzwords':'' }, ignore_index=True)
+    # print(testAffe_df)
     # TestScrape the sites: 
     checkValidWebsites = {}
     validity = scrape_the_web(testAffe_df,0)  
@@ -116,7 +121,7 @@ def check_if_pages_are_still_valid():
     content = []
     for item in list(checkValidWebsites.items()): 
         content.append(item)
-    send_an_email(str(content), 'whizzogalaxy@web.de', 'Checking scrape sites...')
-    print('=> Mail sent to TestAffe...')
-    return content
+    # send_an_email(str(content), 'whizzogalaxy@web.de', 'Checking scrape sites...')
+    # print('=> Mail sent to TestAffe...')
+    return content, testAffe_df
             
