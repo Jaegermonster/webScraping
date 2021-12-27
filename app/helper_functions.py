@@ -96,7 +96,7 @@ def check_if_pages_are_still_valid():
             all_links['links'][0].update(link)
     link_dict = all_links.iloc[0]['links']  # make dictionary from df
 
-    link_dict={'https://www.aerospacetestinginternational.com/news/software/':True}
+    # link_dict={'https://www.aerospacetestinginternational.com/news/software/':True}
 
 
     # Create test user:    
@@ -121,7 +121,7 @@ def check_if_pages_are_still_valid():
     content = []
     for item in list(checkValidWebsites.items()): 
         content.append(item)
-    # send_an_email(str(content), 'whizzogalaxy@web.de', 'Checking scrape sites...')
-    # print('=> Mail sent to TestAffe...')
+    send_an_email(str(content), 'whizzogalaxy@web.de', 'Checking scrape sites...')
+    print('=> Mail sent to TestAffe...')
     return content, testAffe_df
             

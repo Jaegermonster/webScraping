@@ -80,15 +80,14 @@ class Scraper:
                 print('Scraping... ', URL)
                 soup = BeautifulSoup(page.content, 'lxml')
                 valid = {URL:False}
-                for div_tag in soup.find_all("div", class_="col-xs-12 col-md-8"):
-                    h1_tag = div_tag.find("h1")
-                    content = div_tag.find("div", class_="teaser")
-                    link = div_tag.find(href=True)
-                    link = 'www.pressebox.de' + link.attrs['href']
-                    if div_tag is not None:
-                        head1 = h1_tag.get_text()
-                        content = content.get_text()
-                        df = df.append({'head1': head1.split('\n')[2], 'head2': '', 'content': content.split('\n')[1], 'link': link, 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
+                for div_tag in soup.find_all("div", class_="col-12"):
+                    head2 = div_tag.find('div', class_='row gy-4')
+                    if head2 is not None: 
+                        head1 = div_tag.span.text
+                        head2 = head2.h1.text
+                        content = div_tag.p.text
+                        link = div_tag.a.attrs['href']
+                        df = df.append({'head1': head1.split('\n')[1], 'head2': head2.split('\n')[1], 'content': content.split('\n')[1], 'link': link, 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
                         valid = {URL:True}
                 self.validity.update(valid)
             if 'etcusa' in URL: 
@@ -319,6 +318,51 @@ class Scraper:
                         content = article_tag.div.p.text
                         link = article_tag.find('a').attrs['href']
                         df = df.append({'head1':head1, 'head2':'', 'content':content, 'link': link, 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
+                        valid = {URL:True}
+                self.validity.update(valid)
+            if 'singularityhub' in URL:  
+                print('Scraping... ', URL)                
+                soup = BeautifulSoup(page.content, 'lxml', parse_only = SoupStrainer('div', class_="td-container")) 
+                valid = {URL:False}
+                for div_tag in soup.find_all('div', class_="item-details"):
+                    head1 = div_tag.h3
+                    if head1 is not None: 
+                        head1 = div_tag.h3.text
+                        head2 = div_tag.time.text
+                        content = div_tag.find('div', class_="td-excerpt")
+                        if content is not None:
+                            content = content.text
+                        link = div_tag.find('a').attrs['href']
+                        df = df.append({'head1':head1, 'head2':head2, 'content':content, 'link': link, 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
+                        valid = {URL:True}
+                self.validity.update(valid)
+            if 'singularityhub' in URL:  
+                print('Scraping... ', URL)                
+                soup = BeautifulSoup(page.content, 'lxml', parse_only = SoupStrainer('div', class_="td-container")) 
+                valid = {URL:False}
+                for div_tag in soup.find_all('div', class_='td_module_mx5'):
+                    if div_tag.h3 is not None:
+                        head1 = div_tag.h3.text
+                        head2 = div_tag.time.text
+                        link = div_tag.find('a').attrs['href']
+                        df = df.append({'head1':head1, 'head2':head2, 'content':'', 'link': link, 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
+                        valid = {URL:True}
+                for div_tag in soup.find_all('div', class_='td_module_mx13'):
+                    if div_tag.h3 is not None:
+                        head1 = div_tag.h3.text
+                        link = div_tag.find('a').attrs['href']
+                        df = df.append({'head1':head1, 'head2':'', 'content':'', 'link': link, 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
+                        valid = {URL:True}
+                for div_tag in soup.find_all('div', class_="item-details"):
+                    head1 = div_tag.h3
+                    if head1 is not None: 
+                        head1 = div_tag.h3.text
+                        head2 = div_tag.time.text
+                        content = div_tag.find('div', class_="td-excerpt")
+                        if content is not None:
+                            content = content.text
+                        link = div_tag.find('a').attrs['href']
+                        df = df.append({'head1':head1, 'head2':head2, 'content':content, 'link': link, 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
                         valid = {URL:True}
                 self.validity.update(valid)
 

@@ -83,7 +83,8 @@ def create_new_user(name, mail, buzzwords, superbuzzwords=[],
             'https://www.aerospacetestinginternational.com/news/industry-news/':True,
             'https://www.aerospacetestinginternational.com/news/simulation-training/':True,
             'https://www.aerospacetestinginternational.com/news/defense/':True,
-            'https://generalaviationnews.com/':True}):
+            'https://generalaviationnews.com/':True,
+            'https://singularityhub.com/':True}):
     user_df = read_user_df()
     # with open(pickleFolder+'UserPickle.pkl', "rb") as f:
     #     user_df = pickle.load(f)  # load old user pickle
@@ -130,7 +131,7 @@ def update_user(indexValue, buzzwords, superbuzzwords, links, email):  # Update 
     write_new_userDf(user_df)
     return user_df
 
-newLinks={'https://www.heise.de/':True}
+newLinks={'https://singularityhub.com/':True}
 # user_df = append_to_user(0,[],[],newLinks)
 
 # key_list = list(links.keys())
@@ -175,12 +176,28 @@ links = {'https://www.aerospacetestinginternational.com/news/':True,
  'https://www.aerospacetestinginternational.com/news/defense/': True,
  'https://generalaviationnews.com/': True}
 
+
+newBuzzWords = ['Airbus',
+ 'Simulator',
+ 'Lufthansa',
+ 'Training',
+ 'VR',
+ 'XR',
+ 'EASA',
+ 'Pilatus',
+ 'Simulation',
+ 'AI',
+ 'deeplearning',
+ 'Upset',
+ 'UPRT']
+
 # # example:
 # # create_new_user('KikNA', 'kirsten.preis@flightteam.de', ['Training, Simulator, PPL, UL, Lehrgang, ATPL, CPL'],['Flightteam','reise'])
 # create_new_user('PR', 'peter@rothweb.at', ['VR', 'XR','unity', 'varjo', 'simulation', 'simulator'],[],links)
 user_df = read_user_df()
 # delete_user(3)
-# update_user(0, [], [],links)
+# user_df =  update_user(0, newBuzzWords, [], [], [])
 # update_user(3, [], [],[], 'peter.roth@amst.at')
-# append_to_user(0, [], [], links)
+# user_df = append_to_user(3, [], [], newLinks)
+
 

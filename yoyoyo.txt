@@ -10,3 +10,9 @@ docker run -d -v c:\Users\Preis\SynologyDrive\DockerStuff\python\:/myStuff --rm 
 
 NAS:
 sudo docker run -d --restart always --name SchnueffelBot -v /volume1/docker/webscraping:/myStuff python:webscrape  
+
+
+
+To remove the old SchueffelBot:
+1. sudo docker stop SchnueffelBot
+2. sudo docker rm SchnueffelBot
