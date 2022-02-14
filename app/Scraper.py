@@ -30,7 +30,10 @@ class Scraper:
         here_and_now = Scraper.get_time_string(self)
         for i in range(0,len(self.websites)):
             URL = list(self.websites.items())[i][0]
-            page = requests.get(URL)
+            if 'simpleflying' in URL:  # simplyflying.com cannot be scraped right now for reasons unknown (request fails)
+                pass
+            else:
+                page = requests.get(URL)
             if 'www.aero.de' in URL: 
                 print('Scraping... ', URL)
                 soup = BeautifulSoup(page.content, 'lxml')
@@ -237,20 +240,20 @@ class Scraper:
                         df = df.append({'head1':head1, 'head2': '', 'content':content, 'link': link, 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
                         valid = {URL:True}
                 self.validity.update(valid)
-            if 'simpleflying' in URL:  
-                print('Scraping... ', URL)
-                soup = BeautifulSoup(page.content, 'lxml', parse_only = SoupStrainer('div', class_="archive-main archive-grid  archive-heading-small archive-borders-disabled archive-shadow-enabled archive-scale-disabled")) 
-                valid = {URL:False}
-                for div_tag in soup.find_all('div', class_="post-inner"):
-                    link = div_tag.a.attrs['href']
-                    head1 = div_tag.h2
-                    content = div_tag.find('div', class_="entry-excerpt")
-                    if head1 is not None: 
-                        content = content.text.strip('\n')
-                        content = content.strip('\t')
-                        df = df.append({'head1':head1.text, 'head2': '', 'content':content, 'link': link, 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
-                        valid = {URL:True}
-                self.validity.update(valid)
+            # if 'simpleflying' in URL:  
+            #     print('Scraping... ', URL)
+            #     soup = BeautifulSoup(page.content, 'lxml', parse_only = SoupStrainer('div', class_="archive-main archive-grid  archive-heading-small archive-borders-disabled archive-shadow-enabled archive-scale-disabled")) 
+            #     valid = {URL:False}
+            #     for div_tag in soup.find_all('div', class_="post-inner"):
+            #         link = div_tag.a.attrs['href']
+            #         head1 = div_tag.h2
+            #         content = div_tag.find('div', class_="entry-excerpt")
+            #         if head1 is not None: 
+            #             content = content.text.strip('\n')
+            #             content = content.strip('\t')
+            #             df = df.append({'head1':head1.text, 'head2': '', 'content':content, 'link': link, 'when':here_and_now, 'useBuzz':True}, ignore_index=True)
+            #             valid = {URL:True}
+            #     self.validity.update(valid)
             if 'ainonline' in URL:  
                 print('Scraping... ', URL)
                 soup = BeautifulSoup(page.content, 'lxml', parse_only = SoupStrainer('div', class_="small-12 medium-7 large-8 columns main-content first")) 
