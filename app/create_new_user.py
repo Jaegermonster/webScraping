@@ -101,7 +101,7 @@ def append_to_user(indexValue, buzzwords, superbuzzwords, links):  # Update user
     # with open(pickleFolder+'UserPickle.pkl', "rb") as f:
     #     user_df = pickle.load(f)  # load old user pickle   
     if buzzwords: 
-        user_df['buzzwords'][indexValue].update(buzzwords)    
+        user_df['buzzwords'][indexValue].append(buzzwords)    
         print('Append buzzwords')
     if superbuzzwords: 
         user_df['superbuzzwords'][indexValue].update(superbuzzwords)  
@@ -198,6 +198,6 @@ user_df = read_user_df()
 # delete_user(3)
 # user_df =  update_user(0, newBuzzWords, [], [], [])
 # update_user(3, [], [],[], 'peter.roth@amst.at')
-# user_df = append_to_user(3, [], [], newLinks)
+user_df = append_to_user(0, 'Reinforcement', [], [])
 
 
