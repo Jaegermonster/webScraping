@@ -1,3 +1,6 @@
 # webScraping
+
+Schnüffel is on the run... 
+
 2 do: 
-- Check FlugrevueLinks
+- Repair heise
