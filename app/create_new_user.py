@@ -192,12 +192,9 @@ newBuzzWords = ['Airbus',
  'UPRT']
 
 # # example:
-# # create_new_user('KikNA', 'kirsten.preis@flightteam.de', ['Training, Simulator, PPL, UL, Lehrgang, ATPL, CPL'],['Flightteam','reise'])
-# create_new_user('PR', 'peter@rothweb.at', ['VR', 'XR','unity', 'varjo', 'simulation', 'simulator'],[],links)
 user_df = read_user_df()
 # delete_user(3)
 # user_df =  update_user(0, newBuzzWords, [], [], [])
-# update_user(3, [], [],[], 'peter.roth@amst.at')
 user_df = append_to_user(0, 'Reinforcement', [], [])
 
 
