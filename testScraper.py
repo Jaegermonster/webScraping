@@ -10,7 +10,7 @@ from app.helper_functions import check_if_pages_are_still_valid
 # import pandas as pd
 # import time
 # import schedule
-# from app.config import Config
+from app.config import Config
 
 # links={'https://www.flugrevue.de/':True,
 #        'https://www.aero.de/':True,
@@ -24,7 +24,7 @@ from app.helper_functions import check_if_pages_are_still_valid
 #        'https://www.eaa.aero/en/':False}
  
 # user_df = pd.DataFrame(columns = ['name', 'email', 'links', 'buzzwords', 'superbuzzwords'])
-# user_df = user_df.append({'name': 'TestAffe', 'email': 'whizzogalaxy@web.de', 'links': links, 'buzzwords': '', 'superbuzzwords':'' }, ignore_index=True)
+# user_df = user_df.append({'name': 'TestAffe', 'email': Config.MY_EMAIL_ADDRESS, 'links': links, 'buzzwords': '', 'superbuzzwords':'' }, ignore_index=True)
 
 
 # def job():
