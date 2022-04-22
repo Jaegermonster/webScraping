@@ -111,7 +111,7 @@ def check_if_pages_are_still_valid():
     #     'https://www.flugausbildung.de/':False,
     #     'https://www.eaa.aero/en/':False}
     testAffe_df = pd.DataFrame(columns = ['name', 'email', 'links', 'buzzwords', 'superbuzzwords'])
-    # testAffe_df = testAffe_df.append({'name': 'TestAffe', 'email': 'whizzogalaxy@web.de', 'links': link_dict, 'buzzwords': '', 'superbuzzwords':'' }, ignore_index=True)
+    # testAffe_df = testAffe_df.append({'name': 'TestAffe', 'email': Config.MY_EMAIL_ADDRESS, 'links': link_dict, 'buzzwords': '', 'superbuzzwords':'' }, ignore_index=True)
     testAffe_df = testAffe_df.append({'name': 'TestAffe', 'email': '', 'links': link_dict, 'buzzwords': ['AI '], 'superbuzzwords':'' }, ignore_index=True)
     # print(testAffe_df)
     # TestScrape the sites: 
@@ -121,7 +121,7 @@ def check_if_pages_are_still_valid():
     content = []
     for item in list(checkValidWebsites.items()): 
         content.append(item)
-    send_an_email(str(content), 'whizzogalaxy@web.de', 'Checking scrape sites...')
+    send_an_email(str(content), Config.MY_EMAIL_ADDRESS, 'Checking scrape sites...')
     print('=> Mail sent to TestAffe...')
     return content, testAffe_df
             
