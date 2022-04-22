@@ -16,22 +16,24 @@ import schedule
 from app.config import Config
 
 
-with open(Config.PICKLE_FOLDER+'UserPickle.pkl', "rb") as f:
-    user_df = pickle.load(f)  # load user pickle
+try:
+    with open(Config.PICKLE_FOLDER+'UserPickle.pkl', "rb") as f:
+        user_df = pickle.load(f)  # load user pickle
 
-def job():
-    for i in range(0,user_df.shape[0]): 
-        # scrape_the_web(user_df, i)  # w/o multithreding
-        threading.Thread(target = scrape_the_web, args=(user_df,i)).start()  # w/ multithreding
-
-
-
-schedule.every(42).minutes.do(job)
-# schedule.every(30).seconds.do(job)
-schedule.every().day.at("09:11").do(check_if_pages_are_still_valid)
-# schedule.every().wednesday.at("13:15").do(check_if_pages_are_still_valid)
-# schedule.every().sunday.at("20:17").do(check_if_still_alive)
-
-while True:
-    schedule.run_pending()
-    time.sleep(1)
+    def job():
+        for i in range(0,user_df.shape[0]): 
+            # scrape_the_web(user_df, i)  # w/o multithreding
+            threading.Thread(target = scrape_the_web, args=(user_df,i)).start()  # w/ multithreding
+    
+    schedule.every(42).minutes.do(job)
+    # schedule.every(30).seconds.do(job)
+    schedule.every().day.at("09:11").do(check_if_pages_are_still_valid)
+    # schedule.every().wednesday.at("13:15").do(check_if_pages_are_still_valid)
+    # schedule.every().sunday.at("20:17").do(check_if_still_alive)
+    
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
+        
+except:
+    print('Create UserPickle first! \n Use create_new_user.py... ')

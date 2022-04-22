@@ -4,6 +4,7 @@ Created on Sat May 15 08:40:12 2021
 2do: 
     - improve to excel file! Needs to update when user is updated. 
     - Remove dublicate sheets from excel when creating new user. 
+    - add create user_df
 create_new_user: 
     - name
     - mail
@@ -27,8 +28,17 @@ import pickle
 import os
 import pandas as pd
 
-pickleFolder = './' + Config.PICKLE_FOLDER.split('./app/')[1]
 
+pickleFolder = './' + Config.PICKLE_FOLDER.split('./app/')[1]
+if not os.path.isdir(pickleFolder):  # first time run
+    os.makedirs(pickleFolder)
+
+
+def create_new_user_df():
+    user_df = pd.DataFrame(columns=['name', 'email', 'links', 'buzzwords', 'superbuzzwords'])
+    with open(pickleFolder+'UserPickle.pkl', "wb") as f:  # save to pickle
+        pickle.dump(user_df, f, pickle.HIGHEST_PROTOCOL)
+    print('Empty user_df pickled...')  
 
 def read_user_df():  
     with open(pickleFolder+'UserPickle.pkl', "rb") as f:
@@ -192,9 +202,12 @@ newBuzzWords = ['Airbus',
  'UPRT']
 
 # # example:
-user_df = read_user_df()
+# user_df = read_user_df()
 # delete_user(3)
 # user_df =  update_user(0, newBuzzWords, [], [], [])
-user_df = append_to_user(0, 'Reinforcement', [], [])
+# user_df = append_to_user(0, 'Reinforcement', [], [])
 
-
+# First time example:
+user_df = create_new_user_df()
+create_new_user('Schlumpf', 'schlumpf@spd.de', 'yoyoyo', superbuzzwords=[], 
+                    links={'https://www.flugrevue.de/':True})
